@@ -13,9 +13,6 @@
 ;;;; Copyright: Copyright (c) 2012 SnowPlow Analytics Ltd
 ;;;; License:   Apache License Version 2.0
 
-;; TODO: need to change the below so that config variables are
-;;       read ONCE - not checked on every response. 
-
 (ns snowplow.clojure-collector.core
   "Core app handler"
   (:use [compojure.core          :only [defroutes GET]]
@@ -27,21 +24,36 @@
             [snowplow.clojure-collector.responses :as responses]
             [snowplow.clojure-collector.config    :as config]))
 
-(defn- send-cookie-and-pixel-or-redirect'
+(defn- send-cookie-etc''
   "Wrapper for send-cookie-and-pixel-or-redirect, pulling
    in the configuration settings"
   [cookies]
-  (responses/send-cookie-and-pixel-or-redirect
+  (responses/send-cookie-etc
     cookies
     config/duration
     config/domain
     config/p3p-header
     config/redirect-url))
 
+(defn- send-cookie-etc'
+  "Wrapper for send-cookie-etc, pulling
+   in the configuration settings"
+  [cookies duration domain p3p-header redirect-url]
+    (responses/send-cookie-etc cookies duration domain p3p-header redirect-url))  
+
+(defn init
+  "Function called once by Ring before
+   our handler starts"
+  []
+  (alter-var-root
+    (var send-cookie-etc')
+    (fn [f]
+      #(f % config/duration config/domain config/p3p-header config/redirect-url))))
+
 (defroutes routes
   "Our main routes - see also beanstalk.clj plus expose-metrics-as-json"
-  (GET "/i"           {c :cookies} (send-cookie-and-pixel-or-redirect' c))
-  (GET "/ice.png"     {c :cookies} (send-cookie-and-pixel-or-redirect' c)) ; legacy name for i
+  (GET "/i"           {c :cookies} (send-cookie-etc'' c))
+  (GET "/ice.png"     {c :cookies} (send-cookie-etc' c)) ; legacy name for i
   (GET "/healthcheck" request responses/send-200)
   ;  + "/status"      provided by expose-metrics-as-json
   (compojure.route/not-found  responses/send-404))

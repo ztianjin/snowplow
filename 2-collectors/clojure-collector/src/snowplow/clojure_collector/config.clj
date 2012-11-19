@@ -41,7 +41,8 @@
 
 (def redirect-url
   "Get the redirect URL. Can be nil"
-  (get (System/getenv) redirect-varname))
+  (do (println "Checking redirect URL")
+      (get (System/getenv) redirect-varname)))
 
 (def production?
   "Running in production?"
