@@ -19,15 +19,38 @@
 
 ;; Note Beanstalk only has 4 'slots' in the UI for environment variables
 (def ^:const env-varname "SP_ENV")
-(def ^:const p3p-varname "SP_P3P")
-(def ^:const domain-varname "SP_DOMAIN")
-(def ^:const duration-varname "SP_DURATION")
-(def ^:const redirect-varname "SP_REDIRECT")
-; Don't add any more!
+(def ^:const cfg-varname "SP_CFG")
 
 ;; Defaults
 (def ^:const default-p3p-header "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"")
 (def ^:const default-duration 31556900) ; A year
+
+
+(def production?
+  "Running in production?"
+  (= "production" (get (System/getenv) env-varname)))
+
+(def development?
+  "Running in development environment?"
+  (not production?))
+
+(def config
+  "Get the configuration file to load"
+  (get (System/getenv)
+    cfg-varname
+    '(throw (IllegalStateException. (str cfg-varname " environment variable not set")))))
+
+
+;; -------------------- Noodling on Configgity ----------------------------
+
+
+
+;; -------------------- Legacy until deleted ------------------------------
+
+(def ^:const p3p-varname "SP_P3P")
+(def ^:const domain-varname "SP_DOMAIN")
+(def ^:const duration-varname "SP_DURATION")
+(def ^:const redirect-varname "SP_REDIRECT")
 
 (def duration
   "Get the duration (in seconds) the
@@ -42,15 +65,7 @@
 (def redirect-url
   "Get the redirect URL. Can be nil"
   (do (println "Checking redirect URL")
-      (get (System/getenv) redirect-varname)))
-
-(def production?
-  "Running in production?"
-  (= "production" (get (System/getenv) env-varname)))
-
-(def development?
-  "Running in development environment?"
-  (not production?))
+      (get (System/getenv) redirect-varname nil)))
 
 (def domain
   "Get the domain the name cookies will be set on.

@@ -45,10 +45,10 @@
   "Function called once by Ring before
    our handler starts"
   []
-  (alter-var-root
-    (var send-cookie-etc')
-    (fn [f]
-      #(f % config/duration config/domain config/p3p-header config/redirect-url))))
+    (alter-var-root
+      (var send-cookie-etc')
+      (fn [f]
+        #(f % config/duration config/domain config/p3p-header config/redirect-url))))
 
 (defroutes routes
   "Our main routes - see also beanstalk.clj plus expose-metrics-as-json"
