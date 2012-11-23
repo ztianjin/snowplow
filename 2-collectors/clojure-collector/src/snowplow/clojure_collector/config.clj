@@ -115,10 +115,11 @@
 (defn validate-config
   "Validate a config map using
    a Metis validator"
-   [config validator]
-   (if-let [errors (validator config)]
-      (throw (errors))
-      config))
+  [config validator]
+  (let [errors (validator config)]
+    (if (seq errors)
+      (throw (Exception. errors))
+      config)))
 
 ; Function to merge defaults
 
