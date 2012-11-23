@@ -15,7 +15,11 @@
 
 (ns snowplow.clojure-collector.config
   "Gets environment variables, using
-   sensible defaults where necessary")
+   sensible defaults where necessary"
+
+   ;; ------ Includes for Configgity
+   ;  TODO
+   )
 
 ;; Note Beanstalk only has 4 'slots' in the UI for environment variables
 (def ^:const env-varname "SP_ENV")
@@ -43,6 +47,15 @@
 
 ;; -------------------- Noodling on Configgity ----------------------------
 
+; Function to slurp a JSON
+
+; Function to slurp a YAML
+
+; Function to validate using Validateur
+
+; Function to merge defaults
+
+; Function to convert to record
 
 
 ;; -------------------- Legacy until deleted ------------------------------
