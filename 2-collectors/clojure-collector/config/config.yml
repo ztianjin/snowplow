@@ -6,4 +6,5 @@ sink: # What sink will we use to collect events?
 	out: redirect # or change to 'none' if using Tomcat logging. 'fluentd', 'stdout' not supported yet.
 	redirect:
 		url: ADD HERE # or leave blank if no redirect
-		attach_uid: true # or change to 'false'
+		attach_uid: false # or change to 'false'
+		attach_ip: false # or change to 'true'

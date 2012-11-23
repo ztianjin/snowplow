@@ -21,6 +21,8 @@
    ;  TODO
    )
 
+;; -------------------- Constants ------------------------------
+
 ;; Note Beanstalk only has 4 'slots' in the UI for environment variables
 (def ^:const env-varname "SP_ENV")
 (def ^:const cfg-varname "SP_CFG")
@@ -29,6 +31,8 @@
 (def ^:const default-p3p-header "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"")
 (def ^:const default-duration 31556900) ; A year
 
+
+;; ----------------- System environment ------------------------
 
 (def production?
   "Running in production?"
@@ -45,13 +49,76 @@
     '(throw (IllegalStateException. (str cfg-varname " environment variable not set")))))
 
 
+;; ----------------- Metis validation ---------------------------
+
+(defn- redirect-sink [attrs]
+  "Identify sink is set to redirect
+   for conditional Metis validation"
+  (= (:out attrs) "redirect"))
+
+(defn- raw-url
+  "Check that we have a raw URL (e.g.
+   fg362f.cloudfront.net), not a full URL
+   (e.g. http://fg362f.cloudfront.net)."
+  [map key _]
+  (let [url (get map key)] 
+    (when (or (.startsWith url "http")
+              (.startsWith url "://")))
+      "leave off http(s)://"))
+
+; Validation for the cookie fields
+(defvalidator cookie-validator
+  [[:domain :duration :p3p_header] :presence {:allow-nil true}]
+  [:duration :numericality {:allow-nil: true :only-integer true :greater-than 0}])
+
+; Validation for redirect fields
+(defvalidator redirect-validator
+  [[:url :attach_uid :attach_ip] :presence]
+  [:url :raw-url]
+  [:attach_uid {:in ["true" "false"]}
+  [:attach_ip  {:in ["true" "false"]}]
+
+; Validation for the sink fields, including
+; conditional validation for redirect sink
+(defvalidator sink-validator :if-conditional
+  [:out :presence {:in ["none" "redirect"]}]
+  [:redirect :redirect-validator {:if redirect-sink}])
+
+; Overall validation of config map
+(defvalidator config-validator
+  [:cookie :cookie-validator]
+  [:sink   :sink-validator])
+
+
+;; ---------------- Load with Configgity ------------------------
+
+
+; To decide: add defaults then validate, or validate then add defaults
+
 ;; -------------------- Noodling on Configgity ----------------------------
 
 ; Function to slurp a JSON
 
+(defn load-config-json
+  "Temp JSON loader"
+  [resource]
+  (with-open [s (.openStream resource)]
+    (-> s reader (json/parse-stream true))))
+
 ; Function to slurp a YAML
 
-; Function to validate using Validateur
+; TODO
+
+; Function to validate using Metis
+
+; TODO: needs fixing!
+(defn validate-config
+  "Validate a config map using
+   a Metis validator"
+   [config validator]
+   (if-let [errors (validator config)]
+      (throw (errors))
+      config))
 
 ; Function to merge defaults
 
