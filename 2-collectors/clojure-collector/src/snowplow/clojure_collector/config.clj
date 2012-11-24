@@ -23,11 +23,16 @@
             [metis.core    :as metis]))
 
 
-;; ----------------- System environment ------------------------
+;; ----------------- Defaults ------------------------
+
+(def ^:const defaults-filename "defaults.yml")
 
 ;; Note Beanstalk only has 4 'slots' in the UI for environment variables
 (def ^:const env-varname "SP_ENV")
 (def ^:const cfg-varname "SP_CFG")
+
+
+;; ----------------- System environment ------------------------
 
 (def production?
   "Running in production?"
@@ -37,11 +42,13 @@
   "Running in development environment?"
   (not production?))
 
-(def config
+(def config-file
   "Get the configuration file to load"
-  (get (System/getenv)
-    cfg-varname
-    '(throw (IllegalStateException. (str cfg-varname " environment variable not set")))))
+  (let [config (get (System/getenv) cfg-varname)]
+    (if (nil? config)
+      (throw 
+        (IllegalStateException. (str cfg-varname " environment variable not set")))
+      config)))
 
 
 ;; ----------------- Metis validation ---------------------------
@@ -70,13 +77,13 @@
 (metis/defvalidator redirect-validator
   [[:url :attach_uid :attach_ip] :presence]
   [:url :raw-url]
-  [:attach_uid :inclusion {:in ["true" "false"] :allow-nil true}]
-  [:attach_ip  :inclusion {:in ["true" "false"] :allow-nil true}])
+  [:attach_uid :inclusion {:in ["true" "false"] :allow-nil true :message "must be true or false"}]
+  [:attach_ip  :inclusion {:in ["true" "false"] :allow-nil true :message "must be true or false"}])
 
 ; Validation for the sink fields, including
 ; conditional validation for redirect sink
 (metis/defvalidator sink-validator
-  [:out :inclusion {:in ["none" "redirect"]}]
+  [:out :inclusion {:in ["none" "redirect"] :message "must be none or redirect"}]
   [:redirect :redirect-validator {:if redirect-sink}])
 
 ; Overall validation of config map
@@ -85,62 +92,59 @@
   [:sink   :sink-validator])
 
 
-;; ---------------- Load with Configgity ------------------------
-
-
-; To decide: add defaults then validate, or validate then add defaults
-
 ;; -------------- Extracts from Carica --------------------------
 
-(defmulti load-config (comp second
-                            (partial re-find #"\.([^..]*?)$")
-                            (memfn getPath)))
-
-(defmethod load-config "json" [resource]
-  (with-open [s (.openStream resource)]
-    (-> s reader (json/parse-stream true))))
-
-(defmethod load-config "clj" [resource]
-  (try
-    (eval
-     (try
-       (read-string (slurp resource))
-       (catch Throwable t
-         (log/warn t "error reading config" resource)
-         (throw
-          (Exception. (str "error reading config " resource) t)))))
-    (catch Throwable t
-      (log/warn t "error evaling config" resource)
-      (throw
-       (Exception. (str "error evaling config " resource) t)))))
+(defn resources
+  "Search the classpath for resources matching the given path"
+  [path]
+  (when path
+    (reverse
+     (enumeration-seq
+      (.getResources
+       (.getContextClassLoader
+        (Thread/currentThread))
+       path)))))
 
 ;; -------------------- Noodling on Configgity ----------------------------
 
-(defn- load-config-yaml
-  "Loads and parses a YAML file"
+(defn merge-defaults
+  "Merges `defaults` into `map`.
+   Works with nested maps.
+   A default is only set if a
+   value is nil in `map`"
+  [map defaults]
+  (if (and (map? map) (map? defaults))
+    (merge-with merge-defaults map defaults)
+    (if (nil? map) defaults map)))
+
+; TODO: make this support /local, s3(n):// and res://
+(defn- load-config
+  "Loads and parses a config
+   file in YAML format"
   [resource]
   (-> resource slurp yaml/parse-string))
 
-(defmethod load-config "yml"  [resource] (load-config-yaml resource))
-(defmethod load-config "yaml" [resource] (load-config-yaml resource))
-
-(defn validate
-  "Validates a map using a Metis validator.
-   Returns the map for threading"
-  [map validator]
-  (let [errors (validator map)]
+(defn validate-config
+  "Validates a `config` using a Metis validator.
+   Returns the `config` for threading"
+  [config validator]
+  (let [errors (validator config)]
     (if (seq errors)
       (throw
-        (Exception. (str "Error(s) validating map: " errors)))
-      map)))
+        (Exception. (str "Error(s) validating config: " errors)))
+      config)))
 
-(defn set-defaults
-  "Function to merge defaults into a
-   map. Replaces any nil values"
-  [map defaults]
-  merge-with #(if (nil? %1) %2 %1) map defaults)
 
-; Function to convert to record
+;; ---------------- Load with Configgity ------------------------
+
+; TODO: make this generic, so it supports any config file with
+; any default. Then move up to Configgity section
+(def config
+  "Load our config file,
+   validate it, add defaults"
+  (let [config (load-config config-file)
+        defaults (-> "defaults.yml" resources)] ; first load-config)]
+    (-> config (validate-config config-validator)))) ;; (merge-defaults defaults)
 
 
 ;; -------------------- Legacy until deleted ------------------------------
