@@ -53,7 +53,7 @@
 (defn- redirect-sink [attrs]
   "Identify sink is set to redirect
    for conditional Metis validation"
-  (= (:out attrs) "redirect"))
+  (= (:sink :out attrs) "redirect"))
 
 (defn- raw-url
   "Check that we have a raw URL (e.g.
@@ -66,25 +66,25 @@
       "don't include http(s)://"))
 
 ; Validation for the cookie fields
-(defvalidator cookie-validator
+(metis/defvalidator cookie-validator
   [[:domain :duration :p3p_header] :presence {:allow-nil true}]
-  [:duration :numericality {:allow-nil: true :only-integer true :greater-than 0}])
+  [:duration :numericality {:allow-nil true :only-integer true :greater-than 0}])
 
 ; Validation for redirect fields
-(defvalidator redirect-validator
+(metis/defvalidator redirect-validator
   [[:url :attach_uid :attach_ip] :presence]
   [:url :raw-url]
-  [:attach_uid {:in ["true" "false"]}
-  [:attach_ip  {:in ["true" "false"]}]
+  [:attach_uid :inclusion {:in ["true" "false"] :allow-nil true}]
+  [:attach_ip  :inclusion {:in ["true" "false"] :allow-nil true}])
 
 ; Validation for the sink fields, including
 ; conditional validation for redirect sink
-(defvalidator sink-validator :if-conditional
-  [:out :presence {:in ["none" "redirect"]}]
+(metis/defvalidator sink-validator :if-conditional
+  [:out :inclusion {:in ["none" "redirect"]}]
   [:redirect :redirect-validator {:if redirect-sink}])
 
 ; Overall validation of config map
-(defvalidator config-validator
+(metis/defvalidator config-validator
   [:cookie :cookie-validator]
   [:sink   :sink-validator])
 

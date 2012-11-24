@@ -20,7 +20,10 @@
                      [compojure "1.1.3"]
                      [metrics-clojure "0.9.1" :exclusions [org.clojure/clojure]]
                      [metrics-clojure-ring "0.9.1"]
-                     [commons-codec/commons-codec "1.7"]]
+                     [commons-codec/commons-codec "1.7"]
+                     [metis "0.2.1"]
+                     [clj-yaml "0.4.0"]
+                     [cheshire "4.0.4"]]
   ;; The jetty adapter is only used during development
   :profiles         {:dev {:dependencies [[ring/ring-devel "1.1.6"]
                                           [ring/ring-jetty-adapter "1.1.6"]]}}
