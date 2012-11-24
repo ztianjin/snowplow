@@ -2,9 +2,9 @@ cookie:
 	domain: ADD HERE # or leave blank for default (host fqdn)
 	duration: ADD HERE # in secs, or leave blank for default (~ 1 year)
 	p3p_header: ADD HERE # or leave blank for default
-sink: # What sink will we use to collect events?
-	out: redirect # or change to 'none' if using Tomcat logging. 'fluentd', 'stdout' not supported yet.
+sink: # what sink will we use to collect events?
+	out: ADD HERE # either 'redirect', or 'none' if using Tomcat logging. 'fluentd', 'stdout' not supported yet.
 	redirect:
 		url: ADD HERE # or leave blank if no redirect
-		attach_uid: false # or change to 'false'
-		attach_ip: false # or change to 'true'
+		attach_uid: ADD HERE # either 'true' or 'false'
+		attach_ip: ADD HERE # either 'true' or 'false''

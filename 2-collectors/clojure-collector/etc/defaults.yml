@@ -1,0 +1,10 @@
+cookie:
+  domain:
+  duration: 31556900 # A year
+  p3p_header: "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\""
+sink:
+  out: none
+  redirect:
+    url:
+    attach_uid: false
+    attach_ip: false

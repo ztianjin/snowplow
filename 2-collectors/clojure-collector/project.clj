@@ -16,6 +16,7 @@
 (defproject snowplow/clojure-collector "0.1.0"
   :description "A SnowPlow event collector written in Clojure. AWS Elastic Beanstalk compatible."
   :dependencies     [[org.clojure/clojure "1.4.0"]
+                     [org.clojure/tools.logging "0.2.3"]
                      [ring/ring-core "1.1.6"]
                      [compojure "1.1.3"]
                      [metrics-clojure "0.9.1" :exclusions [org.clojure/clojure]]
@@ -24,6 +25,7 @@
                      [metis "0.2.1"]
                      [clj-yaml "0.4.0"]
                      [cheshire "4.0.4"]]
+  :resources-path "etc"
   ;; The jetty adapter is only used during development
   :profiles         {:dev {:dependencies [[ring/ring-devel "1.1.6"]
                                           [ring/ring-jetty-adapter "1.1.6"]]}}

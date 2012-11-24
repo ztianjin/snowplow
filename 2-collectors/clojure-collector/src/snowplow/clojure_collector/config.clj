@@ -16,22 +16,18 @@
 (ns snowplow.clojure-collector.config
   "Gets environment variables, using
    sensible defaults where necessary"
+  (:use [clojure.java.io :only [reader]])
   (:require [clj-yaml.core :as yaml]
+            [clojure.tools.logging :as log]
             [cheshire.core :as json]
             [metis.core    :as metis]))
 
-;; -------------------- Constants ------------------------------
+
+;; ----------------- System environment ------------------------
 
 ;; Note Beanstalk only has 4 'slots' in the UI for environment variables
 (def ^:const env-varname "SP_ENV")
 (def ^:const cfg-varname "SP_CFG")
-
-;; Defaults
-(def ^:const default-p3p-header "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"")
-(def ^:const default-duration 31556900) ; A year
-
-
-;; ----------------- System environment ------------------------
 
 (def production?
   "Running in production?"
@@ -79,7 +75,7 @@
 
 ; Validation for the sink fields, including
 ; conditional validation for redirect sink
-(metis/defvalidator sink-validator :if-conditional
+(metis/defvalidator sink-validator
   [:out :inclusion {:in ["none" "redirect"]}]
   [:redirect :redirect-validator {:if redirect-sink}])
 
@@ -121,9 +117,9 @@
 ;; -------------------- Noodling on Configgity ----------------------------
 
 (defn- load-config-yaml
-  "Explanation to come"
+  "Loads and parses a YAML file"
   [resource]
-  (-> resource slurp parse-string))
+  (-> resource slurp yaml/parse-string))
 
 (defmethod load-config "yml"  [resource] (load-config-yaml resource))
 (defmethod load-config "yaml" [resource] (load-config-yaml resource))
@@ -148,6 +144,10 @@
 
 
 ;; -------------------- Legacy until deleted ------------------------------
+
+;; Defaults
+(def ^:const default-p3p-header "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"")
+(def ^:const default-duration 31556900) ; A year
 
 (def ^:const p3p-varname "SP_P3P")
 (def ^:const domain-varname "SP_DOMAIN")
