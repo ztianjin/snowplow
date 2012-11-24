@@ -64,7 +64,7 @@
   (let [url (get map key)] 
     (when (or (.startsWith url "http")
               (.startsWith url "://")))
-      "leave off http(s)://"))
+      "don't include http(s)://"))
 
 ; Validation for the cookie fields
 (defvalidator cookie-validator
@@ -97,11 +97,11 @@
 
 ;; -------------------- Noodling on Configgity ----------------------------
 
-; Function to slurp a JSON
+(defmulti load-config (comp second
+                            (partial re-find #"\.([^..]*?)$")
+                            (memfn getPath)))
 
-(defn load-config-json
-  "Temp JSON loader"
-  [resource]
+(defmethod load-config "clj" [resource]
   (with-open [s (.openStream resource)]
     (-> s reader (json/parse-stream true))))
 
@@ -109,19 +109,20 @@
 
 ; TODO
 
-; Function to validate using Metis
-
-; TODO: needs fixing!
-(defn validate-config
-  "Validate a config map using
-   a Metis validator"
-  [config validator]
-  (let [errors (validator config)]
+(defn validate
+  "Validates a map using a Metis validator.
+   Returns the map for threading"
+  [map validator]
+  (let [errors (validator map)]
     (if (seq errors)
       (throw (Exception. errors))
-      config)))
+      map)))
 
-; Function to merge defaults
+(defn set-defaults
+  "Function to merge defaults into a
+   map. Replaces any nil values"
+  [map defaults]
+  merge-with #(if (nil? %1) %2 %1) map defaults)
 
 ; Function to convert to record
 
