@@ -16,10 +16,9 @@
 (ns snowplow.clojure-collector.config
   "Gets environment variables, using
    sensible defaults where necessary"
-
-   ;; ------ Includes for Configgity
-   ;  TODO
-   )
+  (:require [clj-yaml.core :as yaml]
+            [cheshire.core :as json]
+            [metis.core    :as metis]))
 
 ;; -------------------- Constants ------------------------------
 
@@ -95,19 +94,39 @@
 
 ; To decide: add defaults then validate, or validate then add defaults
 
-;; -------------------- Noodling on Configgity ----------------------------
+;; -------------- Extracts from Carica --------------------------
 
 (defmulti load-config (comp second
                             (partial re-find #"\.([^..]*?)$")
                             (memfn getPath)))
 
-(defmethod load-config "clj" [resource]
+(defmethod load-config "json" [resource]
   (with-open [s (.openStream resource)]
     (-> s reader (json/parse-stream true))))
 
-; Function to slurp a YAML
+(defmethod load-config "clj" [resource]
+  (try
+    (eval
+     (try
+       (read-string (slurp resource))
+       (catch Throwable t
+         (log/warn t "error reading config" resource)
+         (throw
+          (Exception. (str "error reading config " resource) t)))))
+    (catch Throwable t
+      (log/warn t "error evaling config" resource)
+      (throw
+       (Exception. (str "error evaling config " resource) t)))))
 
-; TODO
+;; -------------------- Noodling on Configgity ----------------------------
+
+(defn- load-config-yaml
+  "Explanation to come"
+  [resource]
+  (-> resource slurp parse-string))
+
+(defmethod load-config "yml"  [resource] (load-config-yaml resource))
+(defmethod load-config "yaml" [resource] (load-config-yaml resource))
 
 (defn validate
   "Validates a map using a Metis validator.
@@ -115,7 +134,8 @@
   [map validator]
   (let [errors (validator map)]
     (if (seq errors)
-      (throw (Exception. errors))
+      (throw
+        (Exception. (str "Error(s) validating map: " errors)))
       map)))
 
 (defn set-defaults
