@@ -64,9 +64,9 @@
 ;; -------------- Validation --------------------------
 
   (defn validate
-    "Validates a `config` using `validator`: either a
-     Metis validator OR Validateur validation-set.
-     Returns the `config` for threading"
+    "Validates a `config` using `validator` - either a
+     Metis validator OR a Validateur validation-set.
+     Returns the `config` for further threading"
     [config validator]
     (let [errors (validator config)]
       (if (seq errors)
