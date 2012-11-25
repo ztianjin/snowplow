@@ -63,13 +63,13 @@
 
 ;; -------------- Validation --------------------------
 
-(defn validate
-  "Validates a `config` using a Metis
-   validator OR Validateur validation-set.
-   Returns the `config` for threading"
-  [config validator]
-  (let [errors (validator config)]
-    (if (seq errors)
-      (throw
-        (Exception. (str "Error(s) validating config: " errors)))
-      config)))
+  (defn validate
+    "Validates a `config` using `validator`: either a
+     Metis validator OR Validateur validation-set.
+     Returns the `config` for threading"
+    [config validator]
+    (let [errors (validator config)]
+      (if (seq errors)
+        (throw
+          (Exception. (str "Error(s) validating config: " errors)))
+        config)))
