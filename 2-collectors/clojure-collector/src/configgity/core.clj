@@ -21,6 +21,8 @@
             [clj-yaml.core :as yaml]
             [cheshire.core :as json]))
 
+;; -------------- File access --------------------------
+
   (defn resources
     "Search the classpath for resources
      matching the given path. Extracted
@@ -49,7 +51,7 @@
         defaults (-> "defaults.yml" resources)] ; first load-config)]
     (-> config (validate-config config-validator)))) ;; (merge-defaults defaults)
 
-;; -------------- Defaults --------------------------
+;; -------------- Default handling --------------------------
 
   (defn merge-defaults
     "Merges `defaults` into `map`. Works with
