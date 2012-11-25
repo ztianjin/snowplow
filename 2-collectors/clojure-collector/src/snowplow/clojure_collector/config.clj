@@ -17,15 +17,13 @@
   "Gets environment variables, using
    sensible defaults where necessary"
   (:use [clojure.java.io :only [reader]])
-  (:require [clj-yaml.core :as yaml]
-            [clojure.tools.logging :as log]
-            [cheshire.core :as json]
-            [metis.core    :as metis]))
+  (:require [configgity.core :as configgity]
+            [metis.core      :as metis]))
 
 
 ;; ----------------- Defaults ------------------------
 
-(def ^:const defaults-filename "defaults.yml")
+(def ^:const defaults-file "res://defaults.yml")
 
 ;; Note Beanstalk only has 4 'slots' in the UI for environment variables
 (def ^:const env-varname "SP_ENV")
@@ -71,7 +69,7 @@
 ; Validation for the cookie fields
 (metis/defvalidator cookie-validator
   [[:domain :duration :p3p_header] :presence {:allow-nil true}]
-  [:duration :numericality {:allow-nil true :only-integer true :greater-than 0}])
+  [:duration :numericality {:allow-nil true :only-integer true :greater-than 0 :message "must be an integer > 0"}])
 
 ; Validation for redirect fields
 (metis/defvalidator redirect-validator
@@ -92,89 +90,9 @@
   [:sink   :sink-validator])
 
 
-;; -------------- Extracts from Carica --------------------------
+;; -------------- Load using Configgity --------------------------
 
-(defn resources
-  "Search the classpath for resources matching the given path"
-  [path]
-  (when path
-    (reverse
-     (enumeration-seq
-      (.getResources
-       (.getContextClassLoader
-        (Thread/currentThread))
-       path)))))
-
-;; -------------------- Noodling on Configgity ----------------------------
-
-(defn merge-defaults
-  "Merges `defaults` into `map`.
-   Works with nested maps.
-   A default is only set if a
-   value is nil in `map`"
-  [map defaults]
-  (if (and (map? map) (map? defaults))
-    (merge-with merge-defaults map defaults)
-    (if (nil? map) defaults map)))
-
-; TODO: make this support /local, s3(n):// and res://
-(defn- load-config
-  "Loads and parses a config
-   file in YAML format"
-  [resource]
-  (-> resource slurp yaml/parse-string))
-
-(defn validate-config
-  "Validates a `config` using a Metis validator.
-   Returns the `config` for threading"
-  [config validator]
-  (let [errors (validator config)]
-    (if (seq errors)
-      (throw
-        (Exception. (str "Error(s) validating config: " errors)))
-      config)))
-
-
-;; ---------------- Load with Configgity ------------------------
-
-; TODO: make this generic, so it supports any config file with
-; any default. Then move up to Configgity section
 (def config
   "Load our config file,
    validate it, add defaults"
-  (let [config (load-config config-file)
-        defaults (-> "defaults.yml" resources)] ; first load-config)]
-    (-> config (validate-config config-validator)))) ;; (merge-defaults defaults)
-
-
-;; -------------------- Legacy until deleted ------------------------------
-
-;; Defaults
-(def ^:const default-p3p-header "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"")
-(def ^:const default-duration 31556900) ; A year
-
-(def ^:const p3p-varname "SP_P3P")
-(def ^:const domain-varname "SP_DOMAIN")
-(def ^:const duration-varname "SP_DURATION")
-(def ^:const redirect-varname "SP_REDIRECT")
-
-(def duration
-  "Get the duration (in seconds) the
-   cookie should last for"
-  (get (System/getenv) duration-varname default-duration))
-
-(def p3p-header
-  "Get the P3P header.
-   Return a default P3P policy if not set"
-  (get (System/getenv) p3p-varname default-p3p-header))
-
-(def redirect-url
-  "Get the redirect URL. Can be nil"
-  (do (println "Checking redirect URL")
-      (get (System/getenv) redirect-varname nil)))
-
-(def domain
-  "Get the domain the name cookies will be set on.
-   Can be a wildcard e.g. '.foo.com'.
-   If undefined we'll just use the FQDN of the host"
-  (get (System/getenv) domain-varname))
+  (configgity/config config-file defaults-file config-validator)
