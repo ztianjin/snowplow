@@ -15,7 +15,6 @@ Schemas: added JSON Schema and tests for unstructured events (#741)
 Schemas: added self-describing JSON Schema instance and schema (#736)
 Schemas: added JSON Schema and tests for payload_data (#760)
 Scala Hadoop Shred: added. Version 0.1.0                                                - TODO
-Scala Hadoop Shred: implement PartitionSource, PartitionedTap for Scalding (#609)       - TODO 
 EmrEtlRunner: bumped to 0.8.0
 EmrEtlRunner: updated S3DistCp steps to use new S3DistCpStep from Elasticity (#629)
 EmrEtlRunner: added ability to start Lingual in EmrEtlRunner (#623)
