@@ -1,9 +1,9 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	"description": "Schema for a new ticket being opened",
+	"description": "Schema for a ticket being closed",
 	"self": {
 		"vendor": "com.snowplowanalytics.zendesk",
-		"name": "ticket_opened",
+		"name": "ticket_closed",
 		"format": "jsonschema",
 		"version": "1-0-0"
 	},
