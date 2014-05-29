@@ -11,25 +11,25 @@
 	"type": "object",
 	"properties": {
 
-		"authorName": {
+		"ticket.latest_comment.author_name": {
 			"type": "string"
 		},
-		"createdAt": {
+		"ticket.latest_comment.created_at": {
 			"type": "string"
 		},
-		"createdAtWithTime": {
+		"ticket.latest_comment.created_at_with_time": {
 			"type": "string"
 		},
-		"isPublic": {
+		"ticket.latest_comment.is_public": {
 			"type": "boolean"
 		},
-		"value": {
+		"ticket.latest_comment.value": {
 			"type": "string"
 		},
-		"ticketUrl": {
+		"ticket.url": {
 			"type": "string"
 		},
-		"ticketId": {
+		"ticket.id": {
 			"type": "string"
 		}
 	},

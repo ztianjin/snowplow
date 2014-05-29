@@ -10,64 +10,64 @@
 
 	"type": "object",
 	"properties": {
-		"account": {
+		"ticket.account": {
 			"type": "string"
 		},
-		"ccNames": {
+		"ticket.cc_names": {
 			"type": "string"
 		},
-		"createdAt": {
+		"ticket.created_at": {
 			"type": "string"
 		},
-		"createdAtWithTimestamp": {
+		"ticket.created_at_with_timestamp": {
 			"type": "string"
 		},
-		"dueDate": {
+		"ticket.due_date": {
 			"type": "string"
 		},
-		"dueDateWithTimestamp": {
+		"ticket.due_date_with_timestamp": {
 			"type": "string"
 		},
-		"externalId": {
+		"ticket.external_id": {
 			"type": "string"
 		},
-		"id": {
+		"ticket.id": {
 			"type": "string"
 		},
-		"inBusinessHours": {
+		"ticket.in_business_hours": {
 			"type": "boolean"
 		},
-		"priority": {
+		"ticket.priority": {
 			"enum": ["Low", "Normal", "High", "Urgent"]
 		},
-		"score": {
+		"ticket.score": {
 			"type": "number"
 		},
-		"status": {
+		"ticket.status": {
 			"enum": ["New", "Open", "Pending", "Solved"]
 		},
-		"tags": {
+		"ticket.tags": {
 			"type": "string"
 		},
-		"ticketType": {
+		"ticket.ticket_type": {
 			"type": "string"
 		},
-		"title": {
+		"ticket.title": {
 			"type": "string"
 		},
-		"updatedAt": {
+		"ticket.updated_at": {
 			"type": "string"
 		},
-		"updatedAtWithTimestamp": {
+		"ticket.updated_at_with_timestamp": {
 			"type": "string"
 		},
-		"url": {
+		"ticket.url": {
 			"type": "string",
 		},
-		"urlWithProtocol": {
+		"ticket.url_with_protocol": {
 			"type": "string",
 		},
-		"via": {
+		"ticket.via": {
 			"type": "string"
 		}
 	},
