@@ -1,0 +1,82 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"description": "Schema for a new ticket being opened",
+	"self": {
+		"vendor": "com.snowplowanalytics.zendesk",
+		"name": "ticket_opened",
+		"format": "jsonschema",
+		"version": "1-0-0"
+	},
+
+	"type": "object",
+	"properties": {
+		"account": {
+			"type": "string"
+		},
+		"ccNames": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"createdAt": {
+			"type": "string"
+		},
+		"createdAtWithTimestamp": {
+			"type": "string"
+		},
+		"dueDate": {
+			"type": "string"
+		},
+		"dueDateWithTimestamp": {
+			"type": "string"
+		},
+		"externalId": {
+			"type": "string"
+		},
+		"id": {
+			"type": "string"
+		},
+		"inBusinessHours": {
+			"type": "bool"
+		},
+		"priority": {
+			"enum": ["Low", "Normal", "High", "Urgent"]
+		},
+		"score": {
+			"type": "number"
+		},
+		"status": {
+			"enum": ["New", "Open", "Pending", "Solved"]
+		},
+		"tags": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"ticketType": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
+		},
+		"updatedAt": {
+			"type": "string"
+		},
+		"updatedAtWithTimestamp": {
+			"type": "string"
+		},
+		"url": {
+			"type": "string",
+		},
+		"urlWithProtocol": {
+			"type": "string",
+		},
+		"via": {
+			"type": "string"
+		}
+	},
+	"minProperties": 1,
+	"additionalProperties": false
+}
