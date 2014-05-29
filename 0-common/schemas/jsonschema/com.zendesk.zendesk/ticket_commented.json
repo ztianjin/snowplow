@@ -25,6 +25,9 @@
 		},
 		"value": {
 			"type": "string"
+		},
+		"ticketUrl": {
+			"type": "string"
 		}
 	},
 	"minProperties": 1,
