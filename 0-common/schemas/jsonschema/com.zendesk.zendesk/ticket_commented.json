@@ -11,25 +11,25 @@
 	"type": "object",
 	"properties": {
 
-		"ticket.latest_comment.author.name": {
+		"latest_comment.author.name": {
 			"type": "string"
 		},
-		"ticket.latest_comment.created_at": {
+		"latest_comment.created_at": {
 			"type": "string"
 		},
-		"ticket.latest_comment.created_at_with_time": {
+		"latest_comment.created_at_with_time": {
 			"type": "string"
 		},
-		"ticket.latest_comment.is_public": {
+		"latest_comment.is_public": {
 			"type": "boolean"
 		},
-		"ticket.latest_comment.value": {
+		"latest_comment.value": {
 			"type": "string"
 		},
-		"ticket.url": {
+		"url": {
 			"type": "string"
 		},
-		"ticket.id": {
+		"id": {
 			"type": "string"
 		}
 	},

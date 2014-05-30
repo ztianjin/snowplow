@@ -10,79 +10,79 @@
 
 	"type": "object",
 	"properties": {
-		"ticket.account": {
+		"account": {
 			"type": "string"
 		},
-		"ticket.cc_names": {
+		"cc_names": {
 			"type": "string"
 		},
-		"ticket.created_at": {
+		"created_at": {
 			"type": "string"
 		},
-		"ticket.created_at_with_timestamp": {
+		"created_at_with_timestamp": {
 			"type": "string"
 		},
-		"ticket.due_date": {
+		"due_date": {
 			"type": "string"
 		},
-		"ticket.due_date_with_timestamp": {
+		"due_date_with_timestamp": {
 			"type": "string"
 		},
-		"ticket.external_id": {
+		"external_id": {
 			"type": "string"
 		},
-		"ticket.group.name": {
+		"group.name": {
 			"type": "string"
 		},
-		"ticket.id": {
+		"id": {
 			"type": "string"
 		},
-		"ticket.in_business_hours": {
+		"in_business_hours": {
 			"type": "boolean"
 		},
-		"ticket.organization.name": {
+		"organization.name": {
 			"type": "string"
 		},
-		"ticket.priority": {
+		"priority": {
 			"enum": ["Low", "Normal", "High", "Urgent"]
 		},
-		"ticket.score": {
+		"score": {
 			"type": "number"
 		},
-		"ticket.status": {
+		"status": {
 			"enum": ["New", "Open", "Pending", "Solved"]
 		},
-		"ticket.tags": {
+		"tags": {
 			"type": "string"
 		},
-		"ticket.ticket_type": {
+		"ticket_type": {
 			"type": "string"
 		},
-		"ticket.title": {
+		"title": {
 			"type": "string"
 		},
-		"ticket.updated_at": {
+		"updated_at": {
 			"type": "string"
 		},
-		"ticket.updated_at_with_timestamp": {
+		"updated_at_with_timestamp": {
 			"type": "string"
 		},
-		"ticket.url": {
+		"url": {
 			"type": "string",
 		},
-		"ticket.url_with_protocol": {
+		"url_with_protocol": {
 			"type": "string",
 		},
-		"ticket.via": {
+		"via": {
 			"type": "string"
 		},
-		"ticket.assignee": {
+		"assignee": {
 			"$ref": "#/definitions/user"
 		},
-		"ticket.requester": {
+		"requester": {
 			"$ref": "#/definitions/user"
 		},
-		"ticket.current_user": {
+		"current_user": {
 			"$ref": "#/definitions/user"
 		}
 	},
@@ -91,61 +91,61 @@
 		"user": {
 			"type": "object",
 			"properties": {
-				"user.name": {
+				"name": {
 					"type": "string"
 				},
-				"user.first_name": {
+				"first_name": {
 					"type": "string"
 				},				
-				"user.last_name": {
+				"last_name": {
 					"type": "string"
 				},				
-				"user.email": {
+				"email": {
 					"type": "string"
 				},
-				"user.language": {
+				"language": {
 					"type": "string"
 				},
-				"user.phone": {
+				"phone": {
 					"type": "string"
 				},
-				"user.external_id": {
+				"external_id": {
 					"type": "string"
 				},
-				"user.details": {
+				"details": {
 					"type": "string"
 				},
-				"user.notes": {
+				"notes": {
 					"type": "string"
 				},
-				"user.time_zone": {
+				"time_zone": {
 					"type": "string"
 				},				
-				"user.role": {
+				"role": {
 					"type": "string"
 				},		
-				"user.extended_role": {
+				"extended_role": {
 					"type": "string"
 				},
-				"user.id": {
+				"id": {
 					"type": "string"
 				},		
-				"user.locale": {
+				"locale": {
 					"type": "string"
 				},
-				"user.signature": {
+				"signature": {
 					"type": "string"
 				},
-				"user.organization": {
+				"organization": {
 					"type": "string"
 				},				
-				"user.tags": {
+				"tags": {
 					"type": "string"
 				}		
 			}
 		}
 	},
-	
+
 	"minProperties": 1,
 	"additionalProperties": false
 }
