@@ -11,7 +11,7 @@
 	"type": "object",
 	"properties": {
 
-		"ticket.latest_comment.author_name": {
+		"ticket.latest_comment.author.name": {
 			"type": "string"
 		},
 		"ticket.latest_comment.created_at": {

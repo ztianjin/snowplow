@@ -31,11 +31,17 @@
 		"ticket.external_id": {
 			"type": "string"
 		},
+		"ticket.group.name": {
+			"type": "string"
+		},
 		"ticket.id": {
 			"type": "string"
 		},
 		"ticket.in_business_hours": {
 			"type": "boolean"
+		},
+		"ticket.organization.name": {
+			"type": "string"
 		},
 		"ticket.priority": {
 			"enum": ["Low", "Normal", "High", "Urgent"]
@@ -69,8 +75,77 @@
 		},
 		"ticket.via": {
 			"type": "string"
+		},
+		"ticket.assignee": {
+			"$ref": "#/definitions/user"
+		},
+		"ticket.requester": {
+			"$ref": "#/definitions/user"
+		},
+		"ticket.current_user": {
+			"$ref": "#/definitions/user"
 		}
 	},
+
+	"definitions": {
+		"user": {
+			"type": "object",
+			"properties": {
+				"user.name": {
+					"type": "string"
+				},
+				"user.first_name": {
+					"type": "string"
+				},				
+				"user.last_name": {
+					"type": "string"
+				},				
+				"user.email": {
+					"type": "string"
+				},
+				"user.language": {
+					"type": "string"
+				},
+				"user.phone": {
+					"type": "string"
+				},
+				"user.external_id": {
+					"type": "string"
+				},
+				"user.details": {
+					"type": "string"
+				},
+				"user.notes": {
+					"type": "string"
+				},
+				"user.time_zone": {
+					"type": "string"
+				},				
+				"user.role": {
+					"type": "string"
+				},		
+				"user.extended_role": {
+					"type": "string"
+				},
+				"user.id": {
+					"type": "string"
+				},		
+				"user.locale": {
+					"type": "string"
+				},
+				"user.signature": {
+					"type": "string"
+				},
+				"user.organization": {
+					"type": "string"
+				},				
+				"user.tags": {
+					"type": "string"
+				}		
+			}
+		}
+	},
+	
 	"minProperties": 1,
 	"additionalProperties": false
 }
