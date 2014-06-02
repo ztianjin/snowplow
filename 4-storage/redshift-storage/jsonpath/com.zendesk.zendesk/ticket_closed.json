@@ -1,0 +1,40 @@
+{
+  "jsonpaths": [
+  
+    "$.schema.vendor",
+    "$.schema.name",
+    "$.schema.format",
+    "$.schema.version",
+
+    "$.hierarchy.rootId",
+    "$.hierarchy.rootTstamp",
+    "$.hierarchy.refRoot",
+    "$.hierarchy.refTree",
+    "$.hierarchy.refParent",
+
+    "$.data.account",
+    "$.data.cc_names",
+    "$.data.created_at",
+    "$.data.created_at_with_timestamp",
+    "$.data.due_date",
+    "$.data.due_date_with_timestamp",
+    "$.data.external_id",
+    "$.data.group.name",
+    "$.data.id",
+    "$.data.in_business_hours",
+    "$.data.organization.name",
+    "$.data.priority",
+    "$.data.score",
+    "$.data.status",
+    "$.data.tags",
+    "$.data.ticket_type",
+    "$.data.title",
+    "$.data.updated_at",
+    "$.data.updated_at_with_timestamp",
+    "$.data.url",
+    "$.data.url_with_protocol",
+    "$.data.via",
+    "$.data.assignee",
+    "$.data.current_user"
+    ]
+}
