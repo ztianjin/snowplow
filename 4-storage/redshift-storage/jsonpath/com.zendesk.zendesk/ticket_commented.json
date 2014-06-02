@@ -1,0 +1,23 @@
+{
+  "jsonpaths": [
+  
+    "$.schema.vendor",
+    "$.schema.name",
+    "$.schema.format",
+    "$.schema.version",
+
+    "$.hierarchy.rootId",
+    "$.hierarchy.rootTstamp",
+    "$.hierarchy.refRoot",
+    "$.hierarchy.refTree",
+    "$.hierarchy.refParent",
+
+    "$.data.latest_comment.author_name",
+    "$.data.latest_comment.created_at",
+    "$.data.latest_comment.created_at_with_time",
+    "$.data.latest_comment.is_public",
+    "$.data.latest_comment.value",
+    "$.data.url",
+    "$.data.id"
+    ]
+}
