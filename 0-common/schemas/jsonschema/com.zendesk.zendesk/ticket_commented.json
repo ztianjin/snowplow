@@ -23,9 +23,6 @@
 		"latest_comment.is_public": {
 			"type": "boolean"
 		},
-		"latest_comment.value": {
-			"type": "string"
-		},
 		"url": {
 			"type": "string"
 		},

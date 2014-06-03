@@ -33,7 +33,6 @@ CREATE TABLE atomic.com_zendesk_zendesk_ticket_commented_1 (
     latest_comment_created_at           timestamp     encode raw,
     latest_comment_created_at_with_time timestamp     encode raw,
     latest_comment_is_public            boolean,
-    latest_comment_value                varchar(4096) encode raw,
     url                                 varchar(1016) encode text32k,
     id                                  varchar(10)   encode text32k,
 )

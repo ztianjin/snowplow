@@ -16,7 +16,6 @@
     "$.data.latest_comment.created_at",
     "$.data.latest_comment.created_at_with_time",
     "$.data.latest_comment.is_public",
-    "$.data.latest_comment.value",
     "$.data.url",
     "$.data.id"
     ]
