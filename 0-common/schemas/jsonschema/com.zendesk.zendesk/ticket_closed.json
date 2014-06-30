@@ -56,7 +56,7 @@
 			"type": "string"
 		},
 		"ticket_type": {
-			"type": "string"
+			"enum": ["Question", "Incident", "Problem", "Task"]
 		},
 		"title": {
 			"type": "string"
