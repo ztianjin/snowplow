@@ -76,8 +76,8 @@ collector {
       # Data will be stored in the following stream.
       # If the stream does not exist, one will be created with $size shards.
       stream {
-        region: "us-east-1"
-        name: "snowplow_collector_example"
+        region: "us-west-2"
+        name: "bigquery_testing"
         size: 1
       }
     }
