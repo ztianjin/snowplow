@@ -23,8 +23,8 @@ connector {
   #
   # If both are set to 'env', use environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
   aws {
-    access-key: "default"
-    secret-key: "default"
+    access-key: "env"
+    secret-key: "env"
   }
 
   kinesis {
