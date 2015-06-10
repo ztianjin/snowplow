@@ -153,6 +153,7 @@ object ElasticsearchSinkApp extends App {
     val elasticsearch = connector.getConfig("elasticsearch")
     val elasticsearchEndpoint = elasticsearch.getString("endpoint")
     val clusterName = elasticsearch.getString("cluster-name")
+    val transportSniffing = elasticsearch.getString("transport-sniffing")
 
     val kinesis = connector.getConfig("kinesis")
     val kinesisIn = kinesis.getConfig("in")
@@ -179,6 +180,7 @@ object ElasticsearchSinkApp extends App {
 
     props.setProperty(KinesisConnectorConfiguration.PROP_ELASTICSEARCH_ENDPOINT, elasticsearchEndpoint)
     props.setProperty(KinesisConnectorConfiguration.PROP_ELASTICSEARCH_CLUSTER_NAME, clusterName)
+    props.setProperty(KinesisConnectorConfiguration.PROP_ELASTICSEARCH_TRANSPORT_SNIFF, transportSniffing)
 
     props.setProperty(KinesisConnectorConfiguration.PROP_BUFFER_BYTE_SIZE_LIMIT, byteLimit)
     props.setProperty(KinesisConnectorConfiguration.PROP_BUFFER_RECORD_COUNT_LIMIT, recordLimit)

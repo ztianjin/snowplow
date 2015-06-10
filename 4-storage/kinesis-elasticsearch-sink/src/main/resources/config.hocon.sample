@@ -59,6 +59,7 @@ sink {
   elasticsearch {
     cluster-name: "{{sinkElasticsearchClusterName}}"
     endpoint: "{{sinkElasticsearchEndpoint}}"
+    transport-sniffing: "{{sinkElasticsearchTransportSniffing}}"
   }
 
   location {
