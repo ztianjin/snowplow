@@ -17,6 +17,7 @@ aws:
         good: ADD HERE       # e.g. s3://my-out-bucket/enriched/good
         bad: ADD HERE        # e.g. s3://my-out-bucket/enriched/bad
         errors: ADD HERE     # Leave blank unless :continue_on_unexpected_error: set to true below
+        archive: ADD HERE    # Where to archive enriched events to, e.g. s3://my-out-bucket/enriched/archive
       shredded:
         good: ADD HERE       # e.g. s3://my-out-bucket/shredded/good
         bad: ADD HERE        # e.g. s3://my-out-bucket/shredded/bad

@@ -45,7 +45,7 @@ module Snowplow
     # The Hash containing the buckets field from the configuration YAML
     BucketHash = ({
       :assets => String,
-      :jsonpath_assets => String,
+      :jsonpath_assets => Maybe[String],
       :log => String,
       :raw => ({
         :in => String,
@@ -128,9 +128,9 @@ module Snowplow
         :output_compression => String
         }),
       :storage => ({
-        :download => {(
+        :download => ({
           :folder => Maybe[String]
-          )},
+          }),
         :targets => ArrayOf[TargetHash]
         })
       })
